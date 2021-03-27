@@ -41,4 +41,8 @@ f = Img.open("ex.png").showed()
 
 '''no to add'''
 
+'''3-rd try'''
 
+'''last one'''
+
+'''wtf?!'''
