@@ -31,7 +31,7 @@ print(smth(filter(ran_1000())))'''
 
 
 def gen(name_list, i = 0):
-	while i != len(name_list)-1:
+	while i != len(name_list):
 		flag = yield name_list[i]
 		while flag == 'nextone':
 			i += 1
