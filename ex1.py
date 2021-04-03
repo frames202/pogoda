@@ -1,4 +1,4 @@
-import random as ran
+'''import random as ran
 
 def ran_1000():
 	ans = []
@@ -25,4 +25,27 @@ def smth(not_remaked):
 	return remaked
 
 
-print(smth(filter(ran_1000())))
+print(smth(filter(ran_1000())))'''
+
+'''\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\'''
+
+
+def gen(name_list, i = 0):
+	while i != len(name_list):
+		flag = yield name_list[i]
+		while flag == 'nextone':
+			i += 1
+			flag = yield name_list[i]
+
+
+func = gen(['a', 'b', 'c', 'd', 'e'])
+print(func.__next__())
+print(func.__next__())
+print(func.__next__())
+print(func.send('nextone'))
+print(func.__next__())
+print(func.send('nextone'))
+print(func.send('nextone'))
+print(func.send('nextone'))
+print(func.__next__())
+print(func.send('nextone'))
