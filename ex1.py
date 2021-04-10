@@ -55,48 +55,37 @@ print(func.send('nextone'))
 '''\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\'''
 
 
-def big_pod(text):
+'''def big_pod(text):
 	used = []
 	longest = ''
 	for i in range(len(text)):
 		if text[i] not in used and text.count(text[i]) > 1:
-			if text[0] == text[i] and text[-1] == text[i]:
-				f = 2
-			elif text[0] == text[i] and text[-1] != text[i]:
-				f = 0
-			elif text[0] != text[i] and text[-1] == text[i]:
-				f = -1
-			elif text[0] != text[i] and text[-1] != text[i]:
-				f = None
-		else:
-			continue
-
-		if f == 2:
-			splited = text.split(text[i])
-			for j in splited:
-				longest = f'{text[i]}{j}{text[i]}' if len(j)+2 > len(longest) else longest
-				used.append(text[i])
-		elif f == 0:
-			splited = text.split(text[i])
-			splited.pop(-1)
-			for j in splited:
-				longest = f'{text[i]}{j}{text[i]}' if len(j)+2 > len(longest) else longest
-				used.append(text[i])
-		elif f == -1:
-			splited = text.split(text[i])
-			splited.pop(0)
-			for j in splited:
-				longest = f'{text[i]}{j}{text[i]}' if len(j)+2 > len(longest) else longest
-				used.append(text[i])
-		elif f == None:
-			splited = text.split(text[i])
-			splited.pop(0)
-			splited.pop(-1)
+			ind_1 = text.find(text[i])
+			ind_2 = text.rfind(text[i])
+			splited = text[ind_1: ind_2].split(text[i])
 			for j in splited:
 				longest = f'{text[i]}{j}{text[i]}' if len(j)+2 > len(longest) else longest
 				used.append(text[i])
 
 	return longest
 
+
 print(big_pod('sdkjfhlazxnmcbzmnxbcmznxbcmznxbcae'))
 print(big_pod('abcabeba'))
+print(big_pod('aa'))'''
+
+
+def big_pod_2(text):
+	used = []
+	longest = ''
+	for i in range(len(text)):
+		if text[i] not in used and text.count(text[i]) > 1:
+			ind_1 = text.find(text[i])
+			ind_2 = text.rfind(text[i])
+			longest = text[ind_1: ind_2+1] if len(text[ind_1: ind_2+1]) > len(longest) else longest
+			used.append(text[i])
+	return longest
+
+print(big_pod_2('sdakjfhlazxnmcbzmnxbcmznxbcmznxbcae'))
+print(big_pod_2('abcabeba'))
+print(big_pod_2('aa'))
