@@ -1,5 +1,5 @@
 while True:
-	print('if u want to stop, input "b" into all spaces.')
+	print('\nif u want to stop, input "b" into all spaces.')
 	n1 = input('first num:\n')
 	n2 = input('second num:\n')
 	act= input('action:\n')
@@ -24,7 +24,7 @@ while True:
 			print('\n', int(n1) % int(n2))
 		else:
 			raise ValueError('check your input and try again.')
-	except: 
+	except (ZeroDivisionError, ValueError):
 		print('check your input, and try again.')
 
 

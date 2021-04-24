@@ -195,7 +195,7 @@ print(is_interesting(1337, [1337, 256]), '2') # 2
 '''
 
 
-regex=""
+'''regex=""
 def chek_pasw(smth, pasw):
     print(smth, pasw)
     flag_num = False
@@ -232,4 +232,94 @@ print(chek_pasw(regex, '123'), False)
 print(chek_pasw(regex, 'abc'), False)
 print(chek_pasw(regex, '123abcABC'), True)
 print(chek_pasw(regex, 'ABC123abc'), True)
-print(chek_pasw(regex, 'Password123'), True)
+print(chek_pasw(regex, 'Password123'), True)'''
+
+
+'''def pig_it(text, ans = ''):
+	for i in text.split(' '):
+		if i.isalpha():
+			ans += f'{i.replace(i[0], "", 1)}{i[0]}ay '
+		else:
+			ans += i+' '
+	return ''.join(ans)[:-1]
+
+
+print(pig_it('Pig latin is cool'))
+print(pig_it('Hello world !'))'''
+
+
+'''def move_zeros(array):
+	ans = [i for i in array if i != 0]
+	ans.extend([i for i in array if i == 0])
+	return ans
+
+
+print(move_zeros([1, 0, 1, 2, 0, 1, 3]))'''
+
+
+'''def first_non_repeating_letter(string):
+	for i in string:
+		if string.lower().count(i) == 1:
+			return i
+	return '''
+
+'''
+def remov_nb(n, summ = 0):
+	smth = (1+n)/2*n
+	ans = []
+	print(smth)
+
+	for i in range(1, n):
+		for j in range(1, n):
+			if i*j == summ:
+				ans.append([i, j])
+print(remov_nb(26), [15, 21])'''
+
+
+'''def top_3_words(text):
+	none_accesed = '/.,[]||?!#$%^&*()'
+	top = []
+	counts = {}
+	for i in none_accesed:
+		text = ' '.join(text.split(i))
+	text = text.split(' ')
+	text.remove('')
+
+	try:
+		for i in text:
+			counts[text.count(i)] = {i}
+		top.append(counts[max(counts.keys())])
+		del counts[max(counts.keys())]
+		top.append(counts[max(counts.keys())])
+		del counts[max(counts.keys())]
+		top.append(counts[max(counts.keys())])
+		return top
+	except ValueError:
+		return top
+
+
+print(top_3_words("In a village of La Mancha, the name of which I have no desire to call to mind, there lived not long since one of those gentlemen that keep a lance in the lance-rack, an old buckler, a lean hack, and a greyhound for coursing. An olla of rather more beef than mutton, a salad on most nights, scraps on Saturdays, lentils on Fridays, and a pigeon or so extra on Sundays, made away with three-quarters of his income."))
+# => ["a", "of", "on"]
+
+print(top_3_words("e e e e DDD ddd DdD: ddd ddd aa aA Aa, bb cc cC e e e"))
+# => ["e", "ddd", "aa"]
+
+print(top_3_words("  //wont won't won't"))
+# => ["won't", "wont"]
+'''
+
+def parse_int(inputed):
+	dict_of_names = {'one': 1, 'two': 2, 'three': 3, 'four': 4, 'five': 5, 'six': 6, 'seven': 7, 'eight': 8, 'nine': 9, 'ten': 10, 'eleven': 11, 'twelve': 12, 'thirteen': 13, 'hundred': '00', 'thousand': '000'}
+	ans = ''
+	inputed = inputed.split(' ')
+	for i in range(len(inputed)):
+		if inputed[i] in dict_of_names.keys():
+			inputed[i] = str(dict_of_names[inputed[i]])
+		elif inputed[i].replace('teen') in dict_of_names.keys():
+			inputed[i] =  f'1{dict_of_names[inputed[i].replace('teen', '')]}'
+		elif inputed[i].replace('ty') in dict_of_names.keys():
+			inputed[i] =  f'{dict_of_names[inputed[i].replace('ty', '')]}0'
+
+	return inputed
+
+print(783919, '\n', parse_int("seven hundred eighty-three thousand nine hundred and nineteen"))
