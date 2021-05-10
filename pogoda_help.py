@@ -1,6 +1,8 @@
 import requests
 import pprint
-from colorama import Fore, Back, Style
+from colorama import init, Fore, Back, Style
+init()
+
 
 city = 'Kiev' #city
 API_KEY = 'd8f1728f479da18a52e428f97e8aac71' #open weather API-Key
@@ -42,21 +44,27 @@ day = 0
 hour = hour_now
 
 while True:
-	print(Back.YELLOW + Fore.GREEN + all_info[day][hour] + Style.RESET_ALL)
-	call = input(f'{Back.WHITE}{Fore.BLUE}"<" - next day | chose time(0-7) | previous day - ">"\n\t\t"break" to stop executing{Style.RESET_ALL}')
-	if call == '<' and day != 0:
+	print(Back.YELLOW + Fore.GREEN + Style.BRIGHT + all_info[day][hour])
+	print(Style.RESET_ALL)
+	print(Back.WHITE + Fore.BLUE)
+	call = input(f'"<" - next day | chose time(0-7) | previous day - ">"\n\t\t"break" to stop executing\t     \n')
+	print(Style.RESET_ALL)
+	if call == '<' and day != 0 and all_info[day-1][hour] != None:
 		day -= 1
-	elif call == '>' and day != 4:
+	elif call == '>' and day != 4 and all_info[day+1][hour] != None:
 		day += 1
-	elif len(call) == 1 and call.isdigit():
+	elif len(call) == 1 and call.isdigit() and all_info[day][int(call)] != None:
 		if int(call) >= 0 and int(call) <= 7:
 			hour = int(call)
 		else:
-			print(Back.RED + Fore.BLACK + "Time isn't correct!" + Style.RESET_ALL)
+			print(Back.RED + Fore.BLACK + "Time isn't correct!")
+			print(Style.RESET_ALL)
 	elif call == '<':
-		print(Back.RED + Fore.Black + "It's the first day!" + Style.RESET_ALL)
+		print(Back.RED + Fore.BLACK + "It's the first day!")
+		print(Style.RESET_ALL)
 	elif call == '>':
-		print(Back.RED + Fore.Black + "It's the last day!" + Style.RESET_ALL)
+		print(Back.RED + Fore.BLACK + "It's the last day!")
+		print(Style.RESET_ALL)
 	elif call == 'break':
 		break
 
