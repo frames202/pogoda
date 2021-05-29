@@ -3,9 +3,11 @@ import pprint
 import random as ran
 import json
 import datetime
+import pyttsx3
 from colorama import init, Fore, Back, Style
 init()
-
+golos = pyttsx3.init()
+golos.setProperty('rate', 120)
 
 city = 'Kiev' #city
 API_KEY = 'd8f1728f479da18a52e428f97e8aac71' #open weather API-Key
@@ -38,7 +40,8 @@ for i in range(len(response['list'][0:7-hour_now+1])): #making first day's weath
     description_now = response['list'][i]['weather'][0]['description']
     id_now = response['list'][i]['weather'][0]['id']
 
-    dates.append(response['list'][i]['dt_txt'][:10])
+    if response['list'][0]['dt_txt'][:10] not in dates:
+            dates.append(response['list'][0]['dt_txt'][:10])
     all_info[0]['humidity'].append(int(humidity_now))
     all_info[0]['min_temp'].append(int(min_t_now))
     all_info[0]['max_temp'].append(int(max_t_now))
@@ -59,8 +62,8 @@ for i in range(1, 5): #making other day's weather dict
         max_t_now = weather_now['temp_max']
         humidity_now = weather_now['humidity']
         description_now = response['list'][(i-1)*7+4]['weather'][0]['description']
-
-        dates.append(response['list'][k]['dt_txt'][:10])
+        if response['list'][k]['dt_txt'][:10] not in dates:
+            dates.append(response['list'][k]['dt_txt'][:10])
         all_info[i]['humidity'].append(int(humidity_now))
         all_info[i]['min_temp'].append(float(min_t_now))
         all_info[i]['max_temp'].append(float(max_t_now))
@@ -76,16 +79,67 @@ for i in range(0, 5):
     all_info[i]['max_temp'] = str(max(all_info[i]["max_temp"]))
     all_info[i]['humidity'] = str(sum(all_info[i]['humidity']) / len(all_info[i]['humidity']))[:5]
 
-print(all_info)
 
-for i in range(len(all_info)):
-    print(' ' + '_'*30)
-    print('|' + ' '*30 + '|')
-    for j in dates:
-        spaces_date = int((30-len(j)-2)/2)+1
-        print(' ' + '_'*30 + '\n' + '|' + ' '*spaces_date + j + ' '*spaces_date + '|' + '\n' + '|' + '_'*30 + '|')
+def pogoda(all_info, dates):
+    j = 0
+    for i in range(len(all_info)):
+        spaces_date = int((30-len(dates[j])-2)/2)+1
+        print(' ' + '_'*30 + '\n' + '|' + ' '*spaces_date + dates[j] + ' '*spaces_date + '|' + '\n' + '|' + '_'*30 + '|')
         print('|' + ' '*30 + '|')
         for key, value in all_info[i].items():
             spaces = 30-len(value)-len(key)-2
             print(f"|{key}: {value}{' '*spaces}|")
-    print('|' + '_'*30 + '|' + '\n')
+        print('|' + '_'*30 + '|' + '\n')
+        j += 1
+    golos.say(f"It's {all_info[0]['av_temp']} grads today (avarage temperature). {all_info[0]['humidity']} percents humidity. The today's weather is {all_info[0]['description']}.")
+    golos.runAndWait()
+    golos.say(f"It's {all_info[1]['av_temp']} grads tomorow (avarage temperature). {all_info[1]['humidity']} percents humidity. The tomorow's weather is {all_info[1]['description']}.")
+    golos.runAndWait()
+
+def main_menu():
+    controls = {' weather': '0','exchange': '1', 'exit': 'e'}
+    print(' ' + '_'*30)
+    print('|' + '   inputput num to view info' + '  ' + '|')
+    print('|' + '_'*30 + '|')
+    for key, value in controls.items():
+        spaces = int((30 - len(key+value))/2)
+        print(f'|{" "*spaces}{key}: {value}{" "*(spaces-1)}|')
+    print('|' + '_'*30 + '|')
+    return input('')
+
+
+def exchange(date):
+    date = '.'.join(date.split('-')[::-1])
+    response = requests.get(f'https://api.privatbank.ua/p24api/exchange_rates?json&date={date}').json()['exchangeRate'][1:]
+    for i in response:
+        if i['currency'] == 'RUB':
+            rub = [i['saleRate'], i['purchaseRate']]
+        elif i['currency'] == 'EUR':
+            eur = [i['saleRate'], i['purchaseRate']]
+        elif i['currency'] == 'USD':
+            usd = [i['saleRate'], i['purchaseRate']]
+
+    print(f" {'_'*30}")
+    print(f"|{' '*13}UAH{' '*14}|")
+    print(f"|{'_'*30}|")
+    print(f"|{' '*3}RUB{' '*3}|{' '*3}EUR{' '*4}|{' '*3}USD{' '*3}|")
+    print(f"|{rub[0]}-{rub[1]}|{eur[0]}-{eur[1]} |{usd[0]}-{usd[1]}|")
+    print(f"|b{'_'*7}s|b{'_'*8}s|b{'_'*7}s|\n")
+    golos.say(f"RUB to UAH: {rub[0]} to {rub[1]}")
+    golos.runAndWait()
+    golos.say(f"euro to UAH: {eur[0]} to {eur[1]}")
+    golos.runAndWait()
+    golos.say(f"american dollar to UAH: {usd[0]} to {usd[1]}")
+    golos.runAndWait()
+
+
+while True:
+    search = main_menu()
+    if search == '0':
+        pogoda(all_info, dates)
+    elif search == '1':
+        exchange(dates[0])
+    elif search == 'e':
+        break
+    else:
+        continue
